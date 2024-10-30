@@ -150,4 +150,38 @@
   border-radius: 8px;
   margin-bottom: 1rem;
   text-align: center;
+}
+
+.submittedMessage {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.submittedMessage h2 {
+  color: #4ECDC4;
+  margin-bottom: 1rem;
+}
+
+.submittedMessage p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.resetButton {
+  background: var(--gradient);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.resetButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 } 

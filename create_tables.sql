@@ -12,15 +12,23 @@ CREATE TABLE public.lectures (
     password text NOT NULL
 );
 
--- יצירת טבלת משובים עם קישור להרצאות
+-- יצירת טבלת משובים עם מידע נוסף
 CREATE TABLE public.feedback (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
     lecture_id uuid REFERENCES public.lectures(id) NOT NULL,
     satisfaction text NOT NULL,
     understanding text NOT NULL,
-    improvement text NOT NULL
+    improvement text NOT NULL,
+    ip_address text,
+    client_token text,
+    browser_info text
 );
+
+-- אינדקסים לחיפוש מהיר
+CREATE INDEX idx_feedback_lecture_id ON public.feedback(lecture_id);
+CREATE INDEX idx_feedback_client_token ON public.feedback(client_token);
+CREATE INDEX idx_feedback_ip_address ON public.feedback(ip_address);
 
 -- הפעלת RLS
 ALTER TABLE public.lectures ENABLE ROW LEVEL SECURITY;
