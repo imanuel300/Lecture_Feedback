@@ -1,5 +1,9 @@
+-- מחיקת טבלאות קיימות
+DROP TABLE IF EXISTS public.feedback CASCADE;
+DROP TABLE IF EXISTS public.lectures CASCADE;
+
 -- יצירת טבלת הרצאות
-CREATE TABLE IF NOT EXISTS public.lectures (
+CREATE TABLE public.lectures (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
     title text NOT NULL,
@@ -8,8 +12,8 @@ CREATE TABLE IF NOT EXISTS public.lectures (
     password text NOT NULL
 );
 
--- יצירת טבלת משובים
-CREATE TABLE IF NOT EXISTS public.feedback (
+-- יצירת טבלת משובים עם קישור להרצאות
+CREATE TABLE public.feedback (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
     lecture_id uuid REFERENCES public.lectures(id) NOT NULL,
