@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import FeedbackForm from './components/FeedbackForm';
 import ResultsPage from './components/ResultsPage';
 import LectureManager from './components/LectureManager';
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/lectures" element={<LectureManager />} />
       </Routes>
+      <SpeedInsights />
     </Router>
   );
 };

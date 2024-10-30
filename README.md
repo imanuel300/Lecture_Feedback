@@ -11,9 +11,9 @@
 - 🎨 ממשק משתמש מודרני ונעים
 
 ## 🚀 קישורים
-- כניסת מנהל: https://lecture-feedback-qqkmov40j-imanuel.vercel.app/admin
-- דוגמה לטופס משוב: https://lecture-feedback-qqkmov40j-imanuel.vercel.app/feedback/[קוד-הרצאה]
-- דוגמה לדף תוצאות: https://lecture-feedback-qqkmov40j-imanuel.vercel.app/results/[קוד-הרצאה]
+- כניסת מנהל: https://lecture-feedback-vert.vercel.app/admin
+- דוגמה לטופס משוב: https://lecture-feedback-vert.vercel.app/feedback/[קוד-הרצאה]
+- דוגמה לדף תוצאות: https://lecture-feedback-vert.vercel.app/results/[קוד-הרצאה]
 
 ## 💭 איך זה עובד?
 
