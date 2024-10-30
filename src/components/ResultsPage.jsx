@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
 import styles from '../styles/ResultsPage.module.css';
 
 const ResultsPage = () => {
+  const { lectureCode } = useParams();
+  const navigate = useNavigate();
+  const [lecture, setLecture] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [feedback, setFeedback] = useState([]);
@@ -14,9 +17,28 @@ const ResultsPage = () => {
     understandingBreakdown: {}
   });
 
+  useEffect(() => {
+    fetchLecture();
+  }, [lectureCode]);
+
+  const fetchLecture = async () => {
+    const { data, error } = await supabase
+      .from('lectures')
+      .select('*')
+      .eq('code', lectureCode)
+      .single();
+
+    if (error || !data) {
+      setError('הרצאה לא נמצאה');
+      return;
+    }
+
+    setLecture(data);
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
+    if (lecture && password === lecture.password) {
       setIsAuthenticated(true);
       setError('');
       fetchData();
@@ -30,6 +52,7 @@ const ResultsPage = () => {
       const { data, error } = await supabase
         .from('feedback')
         .select('*')
+        .eq('lecture_id', lecture.id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -115,11 +138,22 @@ const ResultsPage = () => {
     link.click();
   };
 
+  if (!lecture) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>הרצאה לא נמצאה</div>
+        <button onClick={() => navigate('/')} className={styles.backButton}>
+          חזרה לדף הראשי
+        </button>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return (
       <div className={styles.loginContainer}>
         <form onSubmit={handleLogin} className={styles.loginForm}>
-          <h2>כניסה לדף התוצאות</h2>
+          <h2>צפייה בתוצאות - {lecture.title}</h2>
           {error && <div className={styles.error}>{error}</div>}
           <input
             type="password"
@@ -131,6 +165,9 @@ const ResultsPage = () => {
           <button type="submit" className={styles.loginButton}>
             כניסה
           </button>
+          <Link to="/" className={styles.backLink}>
+            חזרה לדף הראשי
+          </Link>
         </form>
       </div>
     );
@@ -140,9 +177,9 @@ const ResultsPage = () => {
     <div className={styles.resultsContainer}>
       <div className={styles.header}>
         <Link to="/" className={styles.backButton}>
-          חזרה לטופס
+          חזרה לדף הראשי
         </Link>
-        <h1>תוצאות המשוב</h1>
+        <h1>{lecture.title} - תוצאות המשוב</h1>
         <button onClick={exportToCSV} className={styles.exportButton}>
           <span className={styles.icon}>📊</span>
           ייצוא לאקסל

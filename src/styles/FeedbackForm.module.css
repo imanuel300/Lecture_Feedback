@@ -1,7 +1,7 @@
 .container {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 3rem auto;
+  padding: 3rem;
   background: white;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -11,14 +11,27 @@
 .title {
   text-align: center;
   color: #333;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.description {
+  text-align: center;
+  color: #666;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .fieldGroup {
@@ -28,8 +41,11 @@
 }
 
 .fieldGroup label {
-  font-size: 1.2rem;
-  color: #444;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .fieldGroup select,
@@ -40,12 +56,14 @@
   font-size: 1rem;
   font-family: 'Varela Round', sans-serif;
   transition: border-color 0.3s;
+  background: #f8f9fa;
 }
 
 .fieldGroup select:focus,
 .fieldGroup textarea:focus {
   border-color: #4ECDC4;
   outline: none;
+  background: white;
 }
 
 .fieldGroup textarea {
@@ -64,10 +82,19 @@
   transition: transform 0.2s;
   margin-top: 1rem;
   align-self: center;
+  min-width: 200px;
 }
 
 .submitButton:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+:global(.ratingTitle) {
+  font-size: 1.5rem !important;
+  color: #333 !important;
+  font-weight: 500 !important;
+  margin-bottom: 1.5rem !important;
 }
 
 @keyframes fadeIn {
@@ -77,12 +104,25 @@
 
 @media (max-width: 768px) {
   .container {
-    margin: 1rem;
-    padding: 1.5rem;
+    margin: 1.5rem;
+    padding: 2rem;
   }
   
   .title {
     font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .fieldGroup label {
+    font-size: 1.3rem;
+  }
+
+  .form {
+    gap: 2rem;
   }
 }
 

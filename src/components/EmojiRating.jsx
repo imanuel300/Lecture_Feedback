@@ -9,18 +9,21 @@ const EmojiRating = ({ value, onChange }) => {
   ];
 
   return (
-    <div className={styles.emojiContainer}>
-      {emojis.map((item) => (
-        <button
-          key={item.value}
-          type="button"
-          className={`${styles.emojiButton} ${value === item.value ? styles.selected : ''}`}
-          onClick={() => onChange(item.value)}
-        >
-          <span className={styles.emoji}>{item.emoji}</span>
-          <span className={styles.label}>{item.label}</span>
-        </button>
-      ))}
+    <div className={styles.ratingContainer}>
+      <h2 className={styles.ratingTitle}>איך הייתה ההרצאה?</h2>
+      <div className={styles.emojiContainer}>
+        {emojis.map((item) => (
+          <button
+            key={item.value}
+            type="button"
+            className={`${styles.emojiButton} ${value === item.value ? styles.selected : ''}`}
+            onClick={() => onChange(item.value)}
+          >
+            <span className={styles.emoji}>{item.emoji}</span>
+            <span className={styles.label}>{item.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

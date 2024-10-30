@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
 import EmojiRating from './EmojiRating';
 import SuccessMessage from './SuccessMessage';
 import styles from '../styles/FeedbackForm.module.css';
 
 const FeedbackForm = () => {
+  const { lectureCode } = useParams();
+  const navigate = useNavigate();
+  const [lecture, setLecture] = useState(null);
   const [feedback, setFeedback] = useState({
     satisfaction: '',
     understanding: '',
@@ -14,16 +17,36 @@ const FeedbackForm = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    fetchLecture();
+  }, [lectureCode]);
+
+  const fetchLecture = async () => {
+    const { data, error } = await supabase
+      .from('lectures')
+      .select('*')
+      .eq('code', lectureCode)
+      .single();
+
+    if (error || !data) {
+      setError('הרצאה לא נמצאה');
+      return;
+    }
+
+    setLecture(data);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     try {
-      console.log('Submitting feedback:', feedback);
-      
       const { data, error } = await supabase
         .from('feedback')
-        .insert([feedback]);
+        .insert([{
+          ...feedback,
+          lecture_id: lecture.id
+        }]);
         
       if (error) {
         console.error('Supabase error:', error);
@@ -31,7 +54,6 @@ const FeedbackForm = () => {
         return;
       }
       
-      console.log('Feedback submitted successfully:', data);
       setShowSuccess(true);
       setFeedback({ satisfaction: '', understanding: '', improvement: '' });
       
@@ -42,23 +64,34 @@ const FeedbackForm = () => {
     }
   };
 
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>{error}</div>
+        <button onClick={() => navigate('/')} className={styles.backButton}>
+          חזרה לדף הראשי
+        </button>
+      </div>
+    );
+  }
+
+  if (!lecture) {
+    return <div className={styles.container}>טוען...</div>;
+  }
+
   return (
     <div className={styles.container}>
-      <Link to="/results" className={styles.resultsLink}>
-        צפייה בתוצאות
-      </Link>
-      
-      <h1 className={styles.title}>איך הייתה ההרצאה?</h1>
+      <h1 className={styles.title}>{lecture.title}</h1>
+      {lecture.description && (
+        <p className={styles.description}>{lecture.description}</p>
+      )}
       
       {error && <div className={styles.error}>{error}</div>}
       
       <form onSubmit={handleSubmit} className={styles.form}>
         <EmojiRating 
           value={feedback.satisfaction}
-          onChange={(value) => {
-            console.log('Emoji selected:', value);
-            setFeedback({...feedback, satisfaction: value});
-          }}
+          onChange={(value) => setFeedback({...feedback, satisfaction: value})}
         />
 
         <div className={styles.fieldGroup}>
